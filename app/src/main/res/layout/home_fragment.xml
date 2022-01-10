@@ -15,22 +15,22 @@
             style="@style/Widget.ec.Toolbar"
             android:layout_width="match_parent"
             android:layout_height="56dp"
-            app:title="@string/app_name"
+            app:title="Stories"
             app:navigationIcon="@drawable/menu"
             />
     </com.google.android.material.appbar.AppBarLayout>
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="match_parent"
+        android:layout_marginTop="56dp"
+        android:paddingStart="@dimen/story_grid_spacing"
+        android:paddingEnd="@dimen/story_grid_spacing"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
         >
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:text="Home App"
-            android:textSize="24sp"
-            />
-    </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </androidx.core.widget.NestedScrollView>
 
 </FrameLayout>
