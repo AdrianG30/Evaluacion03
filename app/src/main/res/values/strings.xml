@@ -7,4 +7,5 @@
     <string name="login_error_message">La contraseña debe contener al menos 6 caracteres</string>
     <string name="user_title">User</string>
     <string name="stories_title">Titulo</string>
+    <string name="header_toolbar_profile">Profile</string>
 </resources>
