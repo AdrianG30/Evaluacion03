@@ -11,4 +11,10 @@
     <color name="primary">#041C32</color>
     <color name="secondary">#04293A</color>
     <color name="bonus">#ECB365</color>
+    <color name="add">#088871</color>
+    <color name="dark">#066352</color>
+    <color name="notification">#E0EFDA</color>
+    <color name="private_account">#84f8e2</color>
+    <color name="security">#a9faeb</color>
+    <color name="content_text">#212121</color>
 </resources>
