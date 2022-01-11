@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.GridLayoutManager;
 
+import com.google.android.material.button.MaterialButton;
 import com.renato.ec03.network.StoryEntry;
 
 public class HomeFragment extends Fragment {
@@ -25,6 +26,13 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
         View view= inflater.inflate(R.layout.home_fragment, container, false);
         setUpToolbar(view);
+        MaterialButton profileButton=view.findViewById(R.id.profile_button);
+        profileButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ((NavigationHost) getActivity()).navigateTo(new ProfileFragment(),false);
+            }
+        });
         RecyclerView recyclerView= view.findViewById(R.id.recycler_view);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(),2, GridLayoutManager.VERTICAL, false));

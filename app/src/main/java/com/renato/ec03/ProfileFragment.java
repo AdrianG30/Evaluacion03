@@ -1,15 +1,17 @@
 package com.renato.ec03;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
@@ -18,11 +20,13 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class ProfileFragment extends AppCompatActivity{
+public class ProfileFragment extends Fragment {
     ImageView set;
     ProgressDialog pd;
     private static final int CAMERA_REQUEST = 100;
@@ -37,16 +41,20 @@ public class ProfileFragment extends AppCompatActivity{
     AppCompatButton editImage;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.profile_fragment);
-        editImage = findViewById(R.id.edit_image);
-        set = findViewById(R.id.profile_image);
-        pd = new ProgressDialog(this);
+
+
+    }
+
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.profile_fragment, container, false);
+        editImage = view.findViewById(R.id.edit_image);
+        set = view.findViewById(R.id.profile_image);
+        pd = new ProgressDialog(getActivity());
         pd.setCanceledOnTouchOutside(false);
         cameraPermission = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermission = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
         editImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,14 +63,14 @@ public class ProfileFragment extends AppCompatActivity{
                 showImagePicDialog();
             }
         });
+        return view;
     }
     @Override
-    protected  void onPause(){
+    public void onPause(){
         super.onPause();
         Glide.with(ProfileFragment.this).load(imageUri).into(set);
 
     }
-
     @Override
     public  void  onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         if(requestCode == Activity.RESULT_OK){
@@ -89,10 +97,10 @@ public class ProfileFragment extends AppCompatActivity{
                     if(cameraAccepted && writeStorageAccepted){
                         pickFromCamera();
                     } else {
-                        Toast.makeText(this, "Please enable camera and storage permission", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Please enable camera and storage permission", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(this, "Something went wrong! try again...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Something went wrong! try again...", Toast.LENGTH_LONG).show();
                 }
             }
             break;
@@ -102,20 +110,19 @@ public class ProfileFragment extends AppCompatActivity{
                     if(writeStorageAccepted){
                         pickFromGallery();
                     } else {
-                        Toast.makeText(this, "Please enable storage permission", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getActivity(), "Please enable storage permission", Toast.LENGTH_LONG).show();
                     }
                 } else {
-                    Toast.makeText(this, "Something went wrong! try again...", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getActivity(), "Something went wrong! try again...", Toast.LENGTH_LONG).show();
                 }
             }
             break;
         }
     }
 
-
     private void showImagePicDialog() {
         String options[] = {"Camera", "Gallery"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        android.app.AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("Pick image from");
         builder.setItems(options, new DialogInterface.OnClickListener() {
             @Override
@@ -140,14 +147,14 @@ public class ProfileFragment extends AppCompatActivity{
     }
 
     private Boolean checkCameraPermission() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
-        boolean result1 = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) == (PackageManager.PERMISSION_GRANTED);
+        boolean result1 = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
 
         return result && result1;
     }
 
     private Boolean checkStoragePermission() {
-        boolean result = ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
+        boolean result = ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
         return  result;
     }
 
@@ -163,7 +170,7 @@ public class ProfileFragment extends AppCompatActivity{
         ContentValues contentValues = new ContentValues();
         contentValues.put(MediaStore.Images.Media.TITLE, "Temp_pic");
         contentValues.put(MediaStore.Images.Media.DESCRIPTION, "Temp description");
-        imageUri = this.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
+        imageUri = this.getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues);
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
         startActivityForResult(cameraIntent, IMAGE_PICK_CAMERA_REQUEST);
@@ -177,8 +184,9 @@ public class ProfileFragment extends AppCompatActivity{
 
     private void uploadProfileCoverPhoto(final Uri uri) {
         pd.show();
+        // function to save in to database {}
         pd.dismiss();
-        Toast.makeText(ProfileFragment.this, "Updated Photo", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Updated Photo", Toast.LENGTH_LONG).show();
     }
 
 }

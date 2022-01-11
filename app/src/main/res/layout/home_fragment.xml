@@ -19,10 +19,26 @@
             app:navigationIcon="@drawable/menu"
             />
     </com.google.android.material.appbar.AppBarLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/profile_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="45dp"
+            android:background="@android:color/transparent"
+            android:text="SETTINGS"
+            android:textSize="12dp"
+            android:textStyle="bold" />
+    </RelativeLayout>
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="80dp"
         android:paddingStart="@dimen/story_grid_spacing"
         android:paddingEnd="@dimen/story_grid_spacing"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
